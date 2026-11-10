@@ -13,6 +13,14 @@ Snapshots of the real Apify Console used as the source of truth for the replica.
   component classes).
 - `assets/*.webp`: Actor images. Each filename is the base64url-encoded original URL.
 
+## `console/dashboard/` — Dashboard (`/`), dark theme, captured 2026-11-10
+
+Screenshots only, with no saved markup yet. They're 2x Retina captures of a 1440×900 window, and the
+file name records the scroll offset in CSS px. Most of the dashboard's CSS (`RecentlyViewed-*`,
+`ApiTokens-*`, `PixelChart-*`, `SimpleTable-*`, `Tabs-*`, …) is cached in the Store page's
+`<style data-styled>` block. Find it with `node scripts/inspect-reference.ts` or by searching for
+the class name.
+
 ## Working with a reference page
 
 1. Find the element in `index.html` (search for its visible text or `data-test` attribute).

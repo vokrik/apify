@@ -552,3 +552,56 @@ export const StarIcon = createIcon(
     />
   </>,
 );
+
+// ---------------------------------------------------------------------------------------------
+// Icons below are NOT in the saved reference markup yet. Apify's icon set is derived from Tabler
+// Icons (24px grid, 2px stroke ≈ Apify's 20px grid with 1.667 stroke), so these use the matching
+// Tabler outline paths. Replace them with the verbatim Apify SVG once a reference page has them.
+// ---------------------------------------------------------------------------------------------
+
+const tabler: IconProps = {
+  viewBox: "0 0 24 24",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+};
+
+export const SparklesIcon = createIcon(
+  "Sparkles",
+  <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z" />,
+  tabler,
+);
+
+export const HistoryIcon = createIcon(
+  "History",
+  <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969M14 3.223a9.003 9.003 0 0 1 0 17.554M4.579 17.093a8.961 8.961 0 0 1 -1.227 -2.592M3.124 10.5c.16 -.95 .468 -1.85 .9 -2.675l.169 -.305M6.907 4.579a8.954 8.954 0 0 1 3.093 -1.356M12 8v4l2 2" />,
+  tabler,
+);
+
+export const ArrowUpRightIcon = createIcon(
+  "ArrowUpRight",
+  <path d="M17 7l-10 10M8 7l9 0l0 9" />,
+  tabler,
+);
+
+export const CheckIcon = createIcon("Check", <path d="M5 12l5 5l10 -10" />, tabler);
+
+export const SquareIcon = createIcon(
+  "Square",
+  <path d="M5 7a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />,
+  tabler,
+);
+
+export const LockIcon = createIcon(
+  "Lock",
+  <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6zM11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0M8 11v-4a4 4 0 1 1 8 0v4" />,
+  tabler,
+);
+
+/** Model Context Protocol mark (approximation of the official logo). */
+export const McpIcon = createIcon(
+  "Mcp",
+  <path d="M3.5 11.5l8.2 -8.2a2.8 2.8 0 0 1 4 4l-6.2 6.2M9.6 13.4l6.1 -6.1a2.8 2.8 0 0 1 4 4l-7.4 7.4a.9 .9 0 0 0 0 1.3l1.4 1.4M13.7 5.3l-6.1 6.1a2.8 2.8 0 0 0 4 4l6.1 -6.1" />,
+  tabler,
+);

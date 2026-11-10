@@ -19,10 +19,10 @@
 
   --spacing: 0.4rem;
 
-  --font-sans: "Inter Variable", Inter, sans-serif;
+  --font-sans: Inter, sans-serif;
   --font-mono: "IBM Plex Mono", Consolas, "Liberation Mono", Menlo, monospace;
   /* Apify uses the licensed GT Walsheim for some headings; Inter is the fallback. */
-  --font-display: "GT-Walsheim-Regular", "Inter Variable", Inter, sans-serif;
+  --font-display: "GT-Walsheim-Regular", Inter, sans-serif;
 
   /* Apify type scale (font-size / line-height). */
   --text-*: initial;

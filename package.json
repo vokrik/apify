@@ -21,11 +21,11 @@
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
-    "@fontsource-variable/inter": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-router": "^8.5.1"
+    "react-router": "^8.5.1",
+    "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.65.0",
@@ -38,6 +38,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
     "jsdom": "^31.0.0",
+    "linkedom": "^0.18.15",
     "oxfmt": "^0.78.0",
     "oxlint": "^1.93.0",
     "simple-git-hooks": "^2.14.0",

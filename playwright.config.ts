@@ -9,7 +9,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   reporter: process.env.CI ? "github" : "list",
   expect: {
-    toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: "disabled" },
+    // Zero tolerance: even a renamed label must fail. Rendering is deterministic on one machine.
+    toHaveScreenshot: { maxDiffPixels: 0, animations: "disabled" },
   },
   use: {
     baseURL: `http://localhost:${PORT}`,

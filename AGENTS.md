@@ -41,6 +41,15 @@ A **frontend-only prototype** of the Apify Console. Its job is to show a **user 
 
 First-time setup: `pnpm install && pnpm exec playwright install chromium`.
 
+### Fidelity tools
+
+| Command                                                                                                         | What it does                                                                                                                                                                                                         |
+| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node scripts/inspect-reference.ts <page.html> '<selector>' [--depth N] [--css]`                                | Prints the DOM outline of a reference element and, with `--css`, every real CSS rule that applies to its subtree. Start here when building a component.                                                              |
+| `node scripts/compare-screenshot.ts <reference.png> --url http://localhost:5173/ [--scroll N] [--clip x,y,w,h]` | Renders the prototype at 1440×900 and writes a side-by-side image plus a 50% overlay against a reference screenshot (`.context/compare*.png`). Use `--clip` to zoom in. Iterate until the overlay shows no ghosting. |
+
+The screenshot references in `reference/console/*/` are 2x Retina captures of a 1440×900 window. The file name records the scroll offset in CSS px.
+
 ## Don't break finished work
 
 Finished screens must stay pixel-stable while we keep building. Guard rails:
@@ -73,24 +82,28 @@ public/                 Static assets (Apify logos, favicon, background textures
 reference/              Saved real-Console pages; read-only source of truth (see reference/README.md)
 ```
 
-`data/` and `services/` are created when they're first needed. Components should read data through `services/` as if they were calling a real API, so a flow can be changed in one place.
+Components read data through `services/` as if they were calling a real API, so a flow can be changed in one place. `src/data/user.ts` holds `NOW` (2026-11-10), the prototype's fixed "current time". UI state a backend would remember (dismissed banners, collapsed sections) goes through `usePersistentState` (`@/lib/usePersistentState`), which is backed by localStorage. Tests and the compare script clear localStorage before each run.
+
+Routes that aren't built yet fall through to `PlaceholderPage`. Sidebar items are configured in `src/components/layout/navigation.ts`.
 
 ## Styling rules (fidelity first)
 
 - **Source of truth:** the saved pages in `reference/` plus any screenshots the user shares. Before building a screen, find its markup in the reference and copy structure, copy text and exact CSS values (from the `<style data-styled>` block and `assets/main.css`). Don't eyeball values when the real ones are available.
 - **Root font size is 10px** (same as Apify). `1rem` = 10px, so Apify rem values carry over 1:1. Tailwind's `--spacing` is `0.4rem` (4px), so `p-2` = 8px and `gap-4` = 16px, the same px values as stock Tailwind. Use arbitrary values (`p-[0.6rem]`, `w-[100px]`) for values that aren't on the scale.
-- **Colors: only Apify tokens.** Tailwind's default palette is disabled. Use token utilities such as `bg-neutral-background`, `bg-neutral-card-background`, `text-neutral-text`, `text-neutral-text-muted`, `border-neutral-border`, `text-primary-text-interactive` and `bg-primary-action`. The full list is in `src/styles/theme.css`. In arbitrary values, use `var(--color-…)`. Never hardcode hex colors.
+- **Colors: only Apify tokens.** Tailwind's default palette is disabled. Use token utilities such as `bg-neutral-background`, `bg-neutral-card-background`, `text-neutral-text`, `text-neutral-text-muted`, `border-neutral-border`, `text-primary-text-interactive` and `bg-primary-action`. The full list is in `src/styles/theme.css`. In arbitrary values, use `var(--color-…)`. Never hardcode hex colors. The only exception is content that is an image in Apify (e.g. the generated initials avatar in `ActorAvatar`), and it needs a comment.
+- **Measure, don't guess.** If there's no reference CSS for something, measure it in the user's screenshot with `compare-screenshot.ts`. Prefer Apify's existing text styles: 1.2rem/1.6rem at 400 or 500, 1.4rem/2rem at 400/500/600, and 1.3rem for sidebar items. A mismatch that looks like "1.25rem" usually means the font weight is wrong.
 - **Theme:** the app runs in **dark theme** (`<body class="theme-dark">`, matching the reference). Because the tokens switch automatically, light theme works by removing that class. Don't write theme-specific colors.
-- **Typography:** Inter (body), IBM Plex Mono (code). Type scale: `text-xs` 12/16, `text-sm` 14/20 (default body), `text-base` 16/24, `text-lg` 18/28, `text-xl` 20/28, `text-2xl` 24/32, `text-3xl` 36/46, `text-4xl` 48/58. Weights: `font-normal` 400, `font-medium` 500, `font-semibold` 600, `font-strong` 650, `font-bold` 700. GT Walsheim (`font-display`) is licensed and not bundled, so Inter is the fallback.
+- **Typography:** Inter v20 (the exact woff2 files Apify loads from Google Fonts, bundled in `src/assets/fonts/`), IBM Plex Mono (code). Type scale: `text-xs` 12/16, `text-sm` 14/20 (default body), `text-base` 16/24, `text-lg` 18/28, `text-xl` 20/28, `text-2xl` 24/32, `text-3xl` 36/46, `text-4xl` 48/58. Weights: `font-normal` 400, `font-medium` 500, `font-semibold` 600, `font-strong` 650, `font-bold` 700. GT Walsheim (`font-display`) is licensed and not bundled, so Inter is the fallback.
 - **Radii:** `rounded-xs` 4px, `rounded-sm` 6px, `rounded-md` 8px, `rounded-lg` 12px. **Shadows:** `shadow-1` … `shadow-5`, `shadow-active`.
-- **Icons:** use `src/components/icons` (e.g. `<StoreIcon className="size-5" />`). The default size is `size-4` (16px); Apify uses 12/16/20px. When a reference page has an icon that isn't there yet, copy its `<svg>` from the reference markup into that file in the same format. Don't substitute a different icon set.
-- **Images:** Actor images from the reference live in `reference/console/*/assets/`. Copy the ones you need into `public/` with readable names.
+- **Icons:** use `src/components/icons` (e.g. `<StoreIcon className="size-5" />`). The default size is `size-4` (16px); Apify uses 12/16/20px. When a reference page has an icon that isn't there yet, copy its `<svg>` from the reference markup into that file in the same format. Apify's icons are derived from Tabler Icons. If there's no reference markup for an icon yet, use the matching Tabler outline path (see the bottom of that file), and replace it with the verbatim SVG once a reference page has it.
+- **Images:** Actor images from the reference live in `reference/console/*/assets/`. Copy the ones you need into `public/images/` with readable names. If an image exists only in a screenshot, crop it from the 2x screenshot at its exact pixel bounds, inside the 1px border. Several avatars in `public/images/` were made this way.
 - Hand-build components with Tailwind. Add a headless library (e.g. Radix) only for complex behavior such as menus, dialogs or popovers, and style it to match Apify exactly.
 
 ## Code conventions
 
 - Function components, named exports, one component per file (file name = component name).
 - Import from `src` with the `@/` alias.
-- Use `cn(...)` from `@/lib/cn` for conditional classes. oxfmt sorts Tailwind classes automatically.
+- Use `cn(...)` from `@/lib/cn` for conditional classes. It's tailwind-merge aware, so components can take a `className` that overrides their defaults (`cn("p-4", "p-0")` → `p-0`). Add new custom theme keys to its config. oxfmt sorts Tailwind classes automatically.
+- Shared UI primitives that mirror Apify's design system live in `src/components/ui/` (`Button`, `Badge`, `CardContainer`, `Tabs`, `PageHeader`). Reuse them before writing new markup.
 - Keep mock data in `src/data/` and out of components.
 - Let tooling settle formatting and import order: run `pnpm format`. Don't hand-format.
