@@ -47,3 +47,12 @@ export function formatUsd(n: number): string {
 export function formatMonth(date: Date): string {
   return date.toLocaleString("en-US", { month: "long", year: "numeric" });
 }
+
+/**
+ * "understandable_hummock/amazon-scraper" → "underst...scraper" — Apify shortens long
+ * technical names in tables by keeping the start and the end.
+ */
+export function truncateMiddle(value: string, keep = 7): string {
+  if (value.length <= keep * 2 + 3) return value;
+  return `${value.slice(0, keep)}...${value.slice(-keep)}`;
+}

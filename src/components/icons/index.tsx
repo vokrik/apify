@@ -605,3 +605,58 @@ export const McpIcon = createIcon(
   <path d="M3.5 11.5l8.2 -8.2a2.8 2.8 0 0 1 4 4l-6.2 6.2M9.6 13.4l6.1 -6.1a2.8 2.8 0 0 1 4 4l-7.4 7.4a.9 .9 0 0 0 0 1.3l1.4 1.4M13.7 5.3l-6.1 6.1a2.8 2.8 0 0 0 4 4l6.1 -6.1" />,
   tabler,
 );
+
+/** Workflows (Tabler "sitemap"). */
+export const WorkflowsIcon = createIcon(
+  "Workflows",
+  <path d="M3 17a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2zM15 17a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2zM9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2zM6 15v-1a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v1M12 9l0 3" />,
+  tabler,
+);
+
+export const ChevronLeftIcon = createIcon("ChevronLeft", <path d="M15 6l-6 6l6 6" />, tabler);
+
+export const ChevronRightIcon = createIcon("ChevronRight", <path d="M9 6l6 6l-6 6" />, tabler);
+
+/** Sortable column (Tabler "arrows-down-up"). */
+export const SortIcon = createIcon(
+  "Sort",
+  <path d="M17 3l0 18M10 18l-3 3l-3 -3M7 21l0 -18M20 6l-3 -3l-3 3" />,
+  tabler,
+);
+
+export const ArrowDownIcon = createIcon(
+  "ArrowDown",
+  <path d="M12 5l0 14M18 13l-6 6M6 13l6 6" />,
+  tabler,
+);
+
+export const ArrowUpIcon = createIcon(
+  "ArrowUp",
+  <path d="M12 5l0 14M18 11l-6 -6M6 11l6 -6" />,
+  tabler,
+);
+
+export const ArrowLeftIcon = createIcon(
+  "ArrowLeft",
+  <path d="M5 12l14 0M5 12l6 6M5 12l6 -6" />,
+  tabler,
+);
+
+/** Actor cube shown on canvas nodes (Tabler "box"). */
+export const CubeIcon = createIcon(
+  "Cube",
+  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5M12 12l8 -4.5M12 12l0 9M12 12l-8 -4.5" />,
+  tabler,
+);
+
+export const FilterIcon = createIcon(
+  "Filter",
+  <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z" />,
+  tabler,
+);
+
+export const WebhookIcon = createIcon(
+  "Webhook",
+  <path d="M4.876 13.61a4 4 0 1 0 6.124 3.39h6M15.066 20.502a4 4 0 1 0 1.934 -7.502c-.706 0 -1.424 .179 -2 .5l-3 -5.5M16 8a4 4 0 1 0 -8 0c0 1.506 .77 2.818 2 3.5l-3 5.5" />,
+  tabler,
+);

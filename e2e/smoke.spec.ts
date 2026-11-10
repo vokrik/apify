@@ -15,3 +15,18 @@ test("dashboard — full page", async ({ page }) => {
   await expect(page.getByRole("table")).toBeVisible();
   await expect(page).toHaveScreenshot("dashboard-full.png", { fullPage: true });
 });
+
+test("workflows — automations list", async ({ page }) => {
+  await page.goto("/workflows");
+  await expect(page.getByRole("table")).toBeVisible();
+  await expect(page).toHaveScreenshot("workflows.png");
+});
+
+for (const view of ["react-flow", "plain", "steps", "sentence"]) {
+  test(`new automation — ${view} variant`, async ({ page }) => {
+    await page.goto(`/workflows/new?view=${view}`);
+    await expect(page.locator(`[data-test="automation-canvas-${view}"]`)).toBeVisible();
+    await expect(page.locator('[data-test="automation-step-action"]')).toBeVisible();
+    await expect(page).toHaveScreenshot(`new-automation-${view}.png`);
+  });
+}

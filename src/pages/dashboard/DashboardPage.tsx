@@ -23,6 +23,7 @@ export function DashboardPage() {
   return (
     <>
       <PageHeader
+        variant="dashboard"
         title="Dashboard"
         actions={
           <Button>

@@ -98,14 +98,14 @@ function SidebarLink({ item }: { item: NavItem }) {
       <span
         className={cn(
           "overflow-hidden text-[1.3rem] leading-[2rem] font-medium whitespace-nowrap",
-          item.beta ? "flex-[0_1_auto]" : "flex-1",
+          item.badge ? "flex-[0_1_auto]" : "flex-1",
         )}
       >
         {item.label}
       </span>
-      {item.beta && (
-        <Badge variant="primary" className="mr-auto shrink-0 font-normal">
-          Beta
+      {item.badge && (
+        <Badge variant={item.badge.variant} size="xsmall" className="mr-auto shrink-0 font-normal">
+          {item.badge.label}
         </Badge>
       )}
     </NavLink>
@@ -113,7 +113,7 @@ function SidebarLink({ item }: { item: NavItem }) {
 }
 
 function SidebarItem({ item }: { item: NavItem }) {
-  if (item.beta) {
+  if (item.action === "conversationHistory") {
     return (
       <div className="relative rounded-sm">
         <SidebarLink item={item} />

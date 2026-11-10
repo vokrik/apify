@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 
-import { ActorAvatar } from "@/components/ActorAvatar";
-import { LockIcon } from "@/components/icons";
+import { ActorPill } from "@/components/ActorPill";
 import type { ActorRun } from "@/data/types";
 import { durationParts, formatDate, formatNumber, formatTime } from "@/lib/format";
 import { getActor, getTask } from "@/services/actors";
@@ -40,32 +39,7 @@ export function ActorRunsTable({ runs }: { runs: ActorRun[] }) {
                   <td className={bodyCell}>
                     <RunStatusBadge status={run.status} />
                   </td>
-                  <td className={bodyCell}>
-                    {actor && (
-                      <Link
-                        to={`/actors/${actor.id}`}
-                        className="group flex min-h-[3.8rem] min-w-0"
-                      >
-                        <span className="mr-2 flex items-center justify-center">
-                          <ActorAvatar title={actor.title} imageUrl={actor.imageUrl} size={32} />
-                        </span>
-                        <span className="min-w-0 grow">
-                          <span className="block text-sm font-semibold text-neutral-text group-hover:text-primary-action-hover">
-                            {actor.title}
-                          </span>
-                          <span className="flex items-center gap-2 text-xs text-neutral-text-subtle">
-                            <span className="truncate">{actor.slug}</span>
-                            {actor.isOwn && (
-                              <span className="flex items-center whitespace-nowrap">
-                                <LockIcon className="mr-[2px] size-3 text-neutral-icon-subtle" />
-                                Own
-                              </span>
-                            )}
-                          </span>
-                        </span>
-                      </Link>
-                    )}
-                  </td>
+                  <td className={bodyCell}>{actor && <ActorPill actor={actor} />}</td>
                   <td className={bodyCell}>
                     {task && (
                       <Link
