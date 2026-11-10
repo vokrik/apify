@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "./apify-tokens.css";
+@import "./theme.css";
+
+@layer base {
+  html {
+    /* Same as Apify Console: 1rem = 10px. */
+    font-size: 10px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-neutral-background);
+    color: var(--color-neutral-text);
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    line-height: 2rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

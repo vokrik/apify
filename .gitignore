@@ -1,0 +1,14 @@
+node_modules
+dist
+*.local
+.DS_Store
+
+# Conductor workspace scratch space
+.context
+
+# Test artifacts
+coverage
+test-results
+playwright-report
+blob-report
+playwright/.cache
