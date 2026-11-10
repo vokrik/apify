@@ -12,7 +12,8 @@ const variants = {
 
 export type BadgeProps = {
   variant?: keyof typeof variants;
-  size?: "small" | "medium";
+  /** `xsmall` = Apify's 1.6rem-tall chip used for nav tags ("Beta", "New"). */
+  size?: "xsmall" | "small" | "medium";
   className?: string;
   children: ReactNode;
 };
@@ -23,7 +24,9 @@ export function Badge({ variant = "primary", size = "small", className, children
     <span
       className={cn(
         "flex w-fit flex-row items-center justify-center gap-1 rounded-xs text-xs font-medium whitespace-nowrap",
-        size === "small" ? "px-[0.6rem] py-[0.2rem]" : "px-[0.6rem] py-1",
+        size === "xsmall" && "h-[1.6rem] px-1",
+        size === "small" && "px-[0.6rem] py-[0.2rem]",
+        size === "medium" && "px-[0.6rem] py-1",
         variants[variant],
         className,
       )}

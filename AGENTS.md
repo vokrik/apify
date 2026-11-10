@@ -17,6 +17,7 @@ A **frontend-only prototype** of the Apify Console. Its job is to show a **user 
 ## Tech stack
 
 - **React 19** + **TypeScript** (strict, `tsc` v7) + **React Router** (data router, `react-router` package)
+- **React Flow** (`@xyflow/react`) for node canvases (automation editor)
 - **Vite** (dev server and build)
 - **Tailwind CSS v4** (configured in CSS; there is no `tailwind.config.js`)
 - **Vitest** + React Testing Library + jsdom (unit and component tests)
@@ -43,10 +44,10 @@ First-time setup: `pnpm install && pnpm exec playwright install chromium`.
 
 ### Fidelity tools
 
-| Command                                                                                                         | What it does                                                                                                                                                                                                         |
-| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `node scripts/inspect-reference.ts <page.html> '<selector>' [--depth N] [--css]`                                | Prints the DOM outline of a reference element and, with `--css`, every real CSS rule that applies to its subtree. Start here when building a component.                                                              |
-| `node scripts/compare-screenshot.ts <reference.png> --url http://localhost:5173/ [--scroll N] [--clip x,y,w,h]` | Renders the prototype at 1440×900 and writes a side-by-side image plus a 50% overlay against a reference screenshot (`.context/compare*.png`). Use `--clip` to zoom in. Iterate until the overlay shows no ghosting. |
+| Command                                                                                                         | What it does                                                                                                                                                                                                                                                                                                             |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `node scripts/inspect-reference.ts <page.html> '<selector>' [--depth N] [--css]`                                | Prints the DOM outline of a reference element and, with `--css`, every real CSS rule that applies to its subtree. Start here when building a component.                                                                                                                                                                  |
+| `node scripts/compare-screenshot.ts <reference.png> --url http://localhost:5173/ [--scroll N] [--clip x,y,w,h]` | Renders the prototype at 1440×900 and writes a side-by-side image plus a 50% overlay against a reference screenshot (`.context/compare*.png`). Use `--clip` to zoom in. For cropped screenshots, add `--ref-origin x,y` (where the crop starts in the viewport, in CSS px). Iterate until the overlay shows no ghosting. |
 
 The screenshot references in `reference/console/*/` are 2x Retina captures of a 1440×900 window. The file name records the scroll offset in CSS px.
 
@@ -104,6 +105,8 @@ Routes that aren't built yet fall through to `PlaceholderPage`. Sidebar items ar
 - Function components, named exports, one component per file (file name = component name).
 - Import from `src` with the `@/` alias.
 - Use `cn(...)` from `@/lib/cn` for conditional classes. It's tailwind-merge aware, so components can take a `className` that overrides their defaults (`cn("p-4", "p-0")` → `p-0`). Add new custom theme keys to its config. oxfmt sorts Tailwind classes automatically.
-- Shared UI primitives that mirror Apify's design system live in `src/components/ui/` (`Button`, `Badge`, `CardContainer`, `Tabs`, `PageHeader`). Reuse them before writing new markup.
+- Shared UI primitives that mirror Apify's design system live in `src/components/ui/` (`Button`, `Badge`, `CardContainer`, `Tabs`, `PageHeader`, `SearchInput`, `Checkbox`, `TablePagination`, `SegmentedControl`). `ActorPill` and `RunStatusBadge` render Actors and run states the same way everywhere. Reuse them before writing new markup.
+- Full-screen editors (no sidebar) are registered at the top of `routes.tsx`, outside `AppLayout`. The automation editor (`/workflows/new`, `src/pages/workflows/editor/`) offers four variants of the Trigger → Transformation → Action chain. You pick one with the switcher in the top right, and the choice is kept in `?view=` (`react-flow`, `plain`, `steps`, `sentence`). All variants render the steps from `steps.ts`. Canvas nodes share `StepCard`, styled after `reference/console/schedules/`.
+- List pages (Tasks, Actors, Workflows, …) follow one pattern. See `src/pages/workflows/` for a `PageHeader` with a description and actions (primary action, then the `API` button), a search field with a count, and a table with checkboxes, sortable headers and pagination.
 - Keep mock data in `src/data/` and out of components.
 - Let tooling settle formatting and import order: run `pnpm format`. Don't hand-format.

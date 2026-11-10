@@ -17,6 +17,7 @@ import {
   StorageIcon,
   StoreIcon,
   TasksIcon,
+  WorkflowsIcon,
 } from "@/components/icons";
 
 export type NavItem = {
@@ -25,14 +26,31 @@ export type NavItem = {
   icon: ComponentType<IconProps>;
   /** `data-test` attribute from the real Console. */
   testId: string;
-  beta?: boolean;
+  /** Small chip after the label ("Beta", "New"). */
+  badge?: { label: string; variant: "primary" | "success" };
+  /** Extra icon button shown on the right side of the item. */
+  action?: "conversationHistory";
 };
 
 export const mainNav: NavItem[] = [
   { label: "Apify Store", to: "/store", icon: StoreIcon, testId: "nav-store" },
-  { label: "Apify AI", to: "/ai", icon: SparklesIcon, testId: "nav-ai", beta: true },
+  {
+    label: "Apify AI",
+    to: "/ai",
+    icon: SparklesIcon,
+    testId: "nav-ai",
+    badge: { label: "Beta", variant: "primary" },
+    action: "conversationHistory",
+  },
   { label: "Dashboard", to: "/", icon: DashboardIcon, testId: "nav-dashboard" },
   { label: "Actors", to: "/actors", icon: ActorsIcon, testId: "nav-actor-list" },
+  {
+    label: "Workflows",
+    to: "/workflows",
+    icon: WorkflowsIcon,
+    testId: "nav-workflows",
+    badge: { label: "New", variant: "success" },
+  },
   { label: "Runs", to: "/actors/runs", icon: RunsIcon, testId: "nav-actor-run-list" },
   { label: "Tasks", to: "/actors/tasks", icon: TasksIcon, testId: "nav-actor-task-list" },
   {

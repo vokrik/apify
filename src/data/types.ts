@@ -65,3 +65,16 @@ export type ApiToken = {
   title: string;
   createdAt: string;
 };
+
+export type PricingModel = "PAY_PER_USAGE" | "PAY_PER_EVENT" | "RENTAL" | "FREE";
+
+export type Automation = {
+  id: string;
+  name: string;
+  /** `username/automation-name` */
+  slug: string;
+  /** The Actor whose run triggers this automation. */
+  triggerActorId: string;
+  pricing: PricingModel;
+  lastRun?: { startedAt: string; status: RunStatus };
+};
