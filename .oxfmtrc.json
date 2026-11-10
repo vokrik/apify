@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "sortImports": true,
+  "sortPackageJson": true,
+  "sortTailwindcss": {
+    "stylesheet": "./src/styles/index.css",
+    "functions": ["cn"]
+  },
+  "ignorePatterns": ["reference/**", "pnpm-lock.yaml", "e2e/__screenshots__/**"]
+}

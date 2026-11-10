@@ -1,0 +1,269 @@
+/*
+  Tailwind theme for the Apify Console replica.
+
+  - Colors: every Apify semantic token (src/styles/apify-tokens.css) is exposed as a
+    Tailwind color, e.g. `bg-neutral-background`, `text-neutral-text-muted`,
+    `border-neutral-border`, `text-primary-text-interactive`. Tailwind's default palette
+    is removed on purpose — always use Apify tokens so light/dark themes keep working.
+  - Root font size is 10px (same as Apify), so `1.4rem` = 14px and Apify rem values from
+    the reference markup can be copied 1:1. `--spacing` is 0.4rem, so `p-2` = 8px,
+    `gap-4` = 16px, etc. (same px values as stock Tailwind).
+*/
+
+@theme {
+  --color-*: initial;
+  --color-white: #fff;
+  --color-black: #000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --spacing: 0.4rem;
+
+  --font-sans: Inter, sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  /* Apify uses the licensed GT Walsheim for some headings; Inter is the fallback. */
+  --font-display: "GT-Walsheim-Regular", Inter, sans-serif;
+
+  /* Apify type scale (font-size / line-height). */
+  --text-*: initial;
+  --text-xs: 1.2rem;
+  --text-xs--line-height: 1.6rem;
+  --text-sm: 1.4rem;
+  --text-sm--line-height: 2rem;
+  --text-base: 1.6rem;
+  --text-base--line-height: 2.4rem;
+  --text-lg: 1.8rem;
+  --text-lg--line-height: 2.8rem;
+  --text-xl: 2rem;
+  --text-xl--line-height: 2.8rem;
+  --text-2xl: 2.4rem;
+  --text-2xl--line-height: 3.2rem;
+  --text-3xl: 3.6rem;
+  --text-3xl--line-height: 4.6rem;
+  --text-4xl: 4.8rem;
+  --text-4xl--line-height: 5.8rem;
+
+  --font-weight-*: initial;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-strong: 650;
+  --font-weight-bold: 700;
+
+  --radius-*: initial;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Stock Tailwind container sizes, re-expressed for the 10px root. */
+  --container-*: initial;
+  --container-3xs: 25.6rem;
+  --container-2xs: 28.8rem;
+  --container-xs: 32rem;
+  --container-sm: 38.4rem;
+  --container-md: 44.8rem;
+  --container-lg: 51.2rem;
+  --container-xl: 57.6rem;
+  --container-2xl: 67.2rem;
+  --container-3xl: 76.8rem;
+  --container-4xl: 89.6rem;
+  --container-5xl: 102.4rem;
+  --container-6xl: 115.2rem;
+  --container-7xl: 128rem;
+}
+
+/*
+  `inline reference`: utilities resolve to `var(--color-…)` at use site and Tailwind does not
+  re-declare the variables, so the values always come from apify-tokens.css (and switch with
+  `body.theme-dark`).
+*/
+@theme inline reference {
+  --color-bamboo-base: var(--color-bamboo-base);
+  --color-bamboo-dark: var(--color-bamboo-dark);
+  --color-bamboo-light: var(--color-bamboo-light);
+  --color-bamboo-text: var(--color-bamboo-text);
+  --color-buttercup-base: var(--color-buttercup-base);
+  --color-buttercup-dark: var(--color-buttercup-dark);
+  --color-buttercup-light: var(--color-buttercup-light);
+  --color-buttercup-text: var(--color-buttercup-text);
+  --color-coral-base: var(--color-coral-base);
+  --color-coral-dark: var(--color-coral-dark);
+  --color-coral-light: var(--color-coral-light);
+  --color-coral-text: var(--color-coral-text);
+  --color-danger-action: var(--color-danger-action);
+  --color-danger-action-active: var(--color-danger-action-active);
+  --color-danger-action-hover: var(--color-danger-action-hover);
+  --color-danger-background: var(--color-danger-background);
+  --color-danger-background-hover: var(--color-danger-background-hover);
+  --color-danger-background-subtle: var(--color-danger-background-subtle);
+  --color-danger-background-subtle-active: var(--color-danger-background-subtle-active);
+  --color-danger-background-subtle-hover: var(--color-danger-background-subtle-hover);
+  --color-danger-border: var(--color-danger-border);
+  --color-danger-border-subtle: var(--color-danger-border-subtle);
+  --color-danger-chip-background: var(--color-danger-chip-background);
+  --color-danger-chip-background-hover: var(--color-danger-chip-background-hover);
+  --color-danger-chip-text: var(--color-danger-chip-text);
+  --color-danger-field-border: var(--color-danger-field-border);
+  --color-danger-icon: var(--color-danger-icon);
+  --color-danger-text: var(--color-danger-text);
+  --color-indigo-base: var(--color-indigo-base);
+  --color-indigo-dark: var(--color-indigo-dark);
+  --color-indigo-light: var(--color-indigo-light);
+  --color-indigo-text: var(--color-indigo-text);
+  --color-lavender-base: var(--color-lavender-base);
+  --color-lavender-dark: var(--color-lavender-dark);
+  --color-lavender-light: var(--color-lavender-light);
+  --color-lavender-text: var(--color-lavender-text);
+  --color-neutral-action-secondary: var(--color-neutral-action-secondary);
+  --color-neutral-action-secondary-active: var(--color-neutral-action-secondary-active);
+  --color-neutral-action-secondary-hover: var(--color-neutral-action-secondary-hover);
+  --color-neutral-background: var(--color-neutral-background);
+  --color-neutral-background-muted: var(--color-neutral-background-muted);
+  --color-neutral-background-subtle: var(--color-neutral-background-subtle);
+  --color-neutral-background-white: var(--color-neutral-background-white);
+  --color-neutral-border: var(--color-neutral-border);
+  --color-neutral-card-background: var(--color-neutral-card-background);
+  --color-neutral-card-background-hover: var(--color-neutral-card-background-hover);
+  --color-neutral-chip-background: var(--color-neutral-chip-background);
+  --color-neutral-chip-background-active: var(--color-neutral-chip-background-active);
+  --color-neutral-chip-background-disabled: var(--color-neutral-chip-background-disabled);
+  --color-neutral-chip-background-hover: var(--color-neutral-chip-background-hover);
+  --color-neutral-disabled: var(--color-neutral-disabled);
+  --color-neutral-field-background: var(--color-neutral-field-background);
+  --color-neutral-field-border: var(--color-neutral-field-border);
+  --color-neutral-hover: var(--color-neutral-hover);
+  --color-neutral-icon: var(--color-neutral-icon);
+  --color-neutral-icon-disabled: var(--color-neutral-icon-disabled);
+  --color-neutral-icon-on-primary: var(--color-neutral-icon-on-primary);
+  --color-neutral-icon-subtle: var(--color-neutral-icon-subtle);
+  --color-neutral-large-tooltip-background: var(--color-neutral-large-tooltip-background);
+  --color-neutral-large-tooltip-border: var(--color-neutral-large-tooltip-border);
+  --color-neutral-on-surface: var(--color-neutral-on-surface);
+  --color-neutral-overflow: var(--color-neutral-overflow);
+  --color-neutral-overlay: var(--color-neutral-overlay);
+  --color-neutral-separator-subtle: var(--color-neutral-separator-subtle);
+  --color-neutral-small-tooltip-background: var(--color-neutral-small-tooltip-background);
+  --color-neutral-small-tooltip-border: var(--color-neutral-small-tooltip-border);
+  --color-neutral-small-tooltip-text: var(--color-neutral-small-tooltip-text);
+  --color-neutral-text: var(--color-neutral-text);
+  --color-neutral-text-disabled: var(--color-neutral-text-disabled);
+  --color-neutral-text-muted: var(--color-neutral-text-muted);
+  --color-neutral-text-on-primary: var(--color-neutral-text-on-primary);
+  --color-neutral-text-placeholder: var(--color-neutral-text-placeholder);
+  --color-neutral-text-subtle: var(--color-neutral-text-subtle);
+  --color-paprika-base: var(--color-paprika-base);
+  --color-paprika-dark: var(--color-paprika-dark);
+  --color-paprika-light: var(--color-paprika-light);
+  --color-paprika-text: var(--color-paprika-text);
+  --color-primary-action: var(--color-primary-action);
+  --color-primary-action-active: var(--color-primary-action-active);
+  --color-primary-action-hover: var(--color-primary-action-hover);
+  --color-primary-background: var(--color-primary-background);
+  --color-primary-background-hover: var(--color-primary-background-hover);
+  --color-primary-background-subtle: var(--color-primary-background-subtle);
+  --color-primary-black-action: var(--color-primary-black-action);
+  --color-primary-black-action-active: var(--color-primary-black-action-active);
+  --color-primary-black-action-hover: var(--color-primary-black-action-hover);
+  --color-primary-black-background: var(--color-primary-black-background);
+  --color-primary-black-background-hover: var(--color-primary-black-background-hover);
+  --color-primary-black-chip-text: var(--color-primary-black-chip-text);
+  --color-primary-border-subtle: var(--color-primary-border-subtle);
+  --color-primary-chip-background: var(--color-primary-chip-background);
+  --color-primary-chip-background-hover: var(--color-primary-chip-background-hover);
+  --color-primary-chip-background-subtle: var(--color-primary-chip-background-subtle);
+  --color-primary-chip-text: var(--color-primary-chip-text);
+  --color-primary-field-border-active: var(--color-primary-field-border-active);
+  --color-primary-icon: var(--color-primary-icon);
+  --color-primary-shadow-active: var(--color-primary-shadow-active);
+  --color-primary-text: var(--color-primary-text);
+  --color-primary-text-interactive: var(--color-primary-text-interactive);
+  --color-rose-base: var(--color-rose-base);
+  --color-rose-dark: var(--color-rose-dark);
+  --color-rose-light: var(--color-rose-light);
+  --color-rose-text: var(--color-rose-text);
+  --color-slate-base: var(--color-slate-base);
+  --color-slate-dark: var(--color-slate-dark);
+  --color-slate-light: var(--color-slate-light);
+  --color-slate-text: var(--color-slate-text);
+  --color-special-business-plan-background: var(--color-special-business-plan-background);
+  --color-special-enterprise-plan-background: var(--color-special-enterprise-plan-background);
+  --color-special-free-plan-background: var(--color-special-free-plan-background);
+  --color-special-highlight: var(--color-special-highlight);
+  --color-special-scale-plan-background: var(--color-special-scale-plan-background);
+  --color-special-starter-plan-background: var(--color-special-starter-plan-background);
+  --color-success-action: var(--color-success-action);
+  --color-success-action-active: var(--color-success-action-active);
+  --color-success-action-hover: var(--color-success-action-hover);
+  --color-success-background: var(--color-success-background);
+  --color-success-background-hover: var(--color-success-background-hover);
+  --color-success-background-subtle: var(--color-success-background-subtle);
+  --color-success-background-subtle-active: var(--color-success-background-subtle-active);
+  --color-success-background-subtle-hover: var(--color-success-background-subtle-hover);
+  --color-success-border: var(--color-success-border);
+  --color-success-border-subtle: var(--color-success-border-subtle);
+  --color-success-chip-background: var(--color-success-chip-background);
+  --color-success-chip-background-hover: var(--color-success-chip-background-hover);
+  --color-success-chip-text: var(--color-success-chip-text);
+  --color-success-icon: var(--color-success-icon);
+  --color-success-text: var(--color-success-text);
+  --color-teal-base: var(--color-teal-base);
+  --color-teal-dark: var(--color-teal-dark);
+  --color-teal-light: var(--color-teal-light);
+  --color-teal-text: var(--color-teal-text);
+  --color-third-party-airtable-blue: var(--color-third-party-airtable-blue);
+  --color-third-party-airtable-red: var(--color-third-party-airtable-red);
+  --color-third-party-airtable-shadow: var(--color-third-party-airtable-shadow);
+  --color-third-party-airtable-yellow: var(--color-third-party-airtable-yellow);
+  --color-third-party-anthropic: var(--color-third-party-anthropic);
+  --color-third-party-chat-gpt: var(--color-third-party-chat-gpt);
+  --color-third-party-claude: var(--color-third-party-claude);
+  --color-third-party-clay-io-blue: var(--color-third-party-clay-io-blue);
+  --color-third-party-clay-io-magenta: var(--color-third-party-clay-io-magenta);
+  --color-third-party-clay-io-yellow: var(--color-third-party-clay-io-yellow);
+  --color-third-party-codex: var(--color-third-party-codex);
+  --color-third-party-cursor: var(--color-third-party-cursor);
+  --color-third-party-discord: var(--color-third-party-discord);
+  --color-third-party-github: var(--color-third-party-github);
+  --color-third-party-hubspot: var(--color-third-party-hubspot);
+  --color-third-party-keboola: var(--color-third-party-keboola);
+  --color-third-party-langchain: var(--color-third-party-langchain);
+  --color-third-party-linkedin: var(--color-third-party-linkedin);
+  --color-third-party-lovable: var(--color-third-party-lovable);
+  --color-third-party-make: var(--color-third-party-make);
+  --color-third-party-n8n: var(--color-third-party-n8n);
+  --color-third-party-openclaw-dark: var(--color-third-party-openclaw-dark);
+  --color-third-party-openclaw-red: var(--color-third-party-openclaw-red);
+  --color-third-party-openclaw-teal: var(--color-third-party-openclaw-teal);
+  --color-third-party-perplexity: var(--color-third-party-perplexity);
+  --color-third-party-power-automate-blue: var(--color-third-party-power-automate-blue);
+  --color-third-party-power-automate-dark-blue: var(--color-third-party-power-automate-dark-blue);
+  --color-third-party-power-automate-light-blue: var(--color-third-party-power-automate-light-blue);
+  --color-third-party-power-automate-shadow: var(--color-third-party-power-automate-shadow);
+  --color-third-party-salesforce-blue: var(--color-third-party-salesforce-blue);
+  --color-third-party-salesforce-white: var(--color-third-party-salesforce-white);
+  --color-third-party-snowflake: var(--color-third-party-snowflake);
+  --color-third-party-supabase: var(--color-third-party-supabase);
+  --color-third-party-twitter: var(--color-third-party-twitter);
+  --color-third-party-youtube: var(--color-third-party-youtube);
+  --color-third-party-zapier: var(--color-third-party-zapier);
+  --color-warning-background: var(--color-warning-background);
+  --color-warning-background-hover: var(--color-warning-background-hover);
+  --color-warning-background-subtle: var(--color-warning-background-subtle);
+  --color-warning-border: var(--color-warning-border);
+  --color-warning-border-subtle: var(--color-warning-border-subtle);
+  --color-warning-chip-background: var(--color-warning-chip-background);
+  --color-warning-chip-background-hover: var(--color-warning-chip-background-hover);
+  --color-warning-chip-text: var(--color-warning-chip-text);
+  --color-warning-field-border: var(--color-warning-field-border);
+  --color-warning-icon: var(--color-warning-icon);
+  --color-warning-text: var(--color-warning-text);
+
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-3: var(--shadow-3);
+  --shadow-4: var(--shadow-4);
+  --shadow-5: var(--shadow-5);
+  --shadow-active: var(--shadow-active);
+}
