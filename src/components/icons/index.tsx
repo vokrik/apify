@@ -660,3 +660,47 @@ export const WebhookIcon = createIcon(
   <path d="M4.876 13.61a4 4 0 1 0 6.124 3.39h6M15.066 20.502a4 4 0 1 0 1.934 -7.502c-.706 0 -1.424 .179 -2 .5l-3 -5.5M16 8a4 4 0 1 0 -8 0c0 1.506 .77 2.818 2 3.5l-3 5.5" />,
   tabler,
 );
+
+export const ArrowsDiffIcon = createIcon(
+  "ArrowsDiff",
+  <path d="M11 16h10M11 16l4 4M11 16l4 -4M13 8h-10M13 8l-4 4M13 8l-4 -4" />,
+  tabler,
+);
+
+export const SquarePlusIcon = createIcon(
+  "SquarePlus",
+  <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14zM9 12h6M12 9v6" />,
+  tabler,
+);
+
+export const SquareMinusIcon = createIcon(
+  "SquareMinus",
+  <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14zM9 12h6" />,
+  tabler,
+);
+
+export const TrendingDownIcon = createIcon(
+  "TrendingDown",
+  <path d="M3 7l6 6l4 -4l8 8M21 10l0 7l-7 0" />,
+  tabler,
+);
+
+export const MoodSmileIcon = createIcon(
+  "MoodSmile",
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M9 10l.01 0M15 10l.01 0M9.5 15a3.5 3.5 0 0 0 5 0" />,
+  tabler,
+);
+
+export const ListCheckIcon = createIcon(
+  "ListCheck",
+  <path d="M3.5 5.5l1.5 1.5l2.5 -2.5M3.5 11.5l1.5 1.5l2.5 -2.5M3.5 17.5l1.5 1.5l2.5 -2.5M11 6l9 0M11 12l9 0M11 18l9 0" />,
+  tabler,
+);
+
+export const ChevronUpIcon = createIcon("ChevronUp", <path d="M6 15l6 -6l6 6" />, tabler);
+
+export const TrashIcon = createIcon(
+  "Trash",
+  <path d="M4 7l16 0M10 11l0 6M14 11l0 6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />,
+  tabler,
+);

@@ -33,6 +33,13 @@
       {
         "allow": ["**/*.css", "@testing-library/jest-dom/vitest"]
       }
+    ],
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "controlComponents": ["Radio", "Checkbox"],
+        "depth": 3
+      }
     ]
   },
   "options": {

@@ -11,6 +11,40 @@ export const actors: Actor[] = [
   },
 ];
 
+/**
+ * The user's Actors list ("Recent & Bookmarked"): their own Actors plus Store Actors they have run,
+ * most recently used first. Store Actors resolve from `storeActors`.
+ */
+export const myActorIds = [
+  "amazon-scraper",
+  "nFJndFXA5zjCTuudP",
+  "WnMxbsRLNbPeYL6ge",
+  "hotel-review-aggregator",
+];
+
 export const tasks: ActorTask[] = [
-  { id: "amazon-scraper-task", actorId: "amazon-scraper", title: "AmazonScraper" },
+  {
+    id: "amazon-scraper-task",
+    actorId: "amazon-scraper",
+    title: "AmazonScraper",
+    slug: "understandable_hummock/amazonscraper",
+  },
+  {
+    id: "amazon-headphones-task",
+    actorId: "amazon-scraper",
+    title: "Headphones bestsellers",
+    slug: "understandable_hummock/headphones-bestsellers",
+  },
+  {
+    id: "brand-mentions-task",
+    actorId: "nFJndFXA5zjCTuudP",
+    title: "Brand mentions on Google",
+    slug: "understandable_hummock/brand-mentions-on-google",
+  },
+  {
+    id: "prague-hotels-task",
+    actorId: "hotel-review-aggregator",
+    title: "Prague hotel reviews",
+    slug: "understandable_hummock/prague-hotel-reviews",
+  },
 ];

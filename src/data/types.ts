@@ -53,6 +53,8 @@ export type ActorTask = {
   id: string;
   actorId: string;
   title: string;
+  /** `username/task-name` */
+  slug: string;
 };
 
 export type RecentlyViewedItem =
@@ -78,3 +80,40 @@ export type Automation = {
   pricing: PricingModel;
   lastRun?: { startedAt: string; status: RunStatus };
 };
+
+/** A dataset the user already has (e.g. a saved snapshot used as a baseline). */
+export type Dataset = {
+  id: string;
+  name: string;
+  itemCount: number;
+  createdAt: string;
+};
+
+export type DatasetColumn = {
+  key: string;
+  type: "string" | "number";
+};
+
+/** A dataset row; `null` is a missing value. */
+export type DatasetRow = Record<string, string | number | null>;
+
+export type TransformationCategory = "builtin" | "marketplace" | "own";
+
+export type TransformationId =
+  | "get-changed-rows"
+  | "get-new-rows"
+  | "get-missing-rows"
+  | "products-below-threshold"
+  | "filter-incomplete-data"
+  | "filter-by-sentiment";
+
+export type Transformation = {
+  id: TransformationId;
+  title: string;
+  description: string;
+  category: TransformationCategory;
+  /** `username` of the publisher (Marketplace and own transformations). */
+  author?: string;
+};
+
+export type Sentiment = "positive" | "neutral" | "negative";

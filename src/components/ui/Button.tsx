@@ -10,7 +10,7 @@ const variants = {
   secondary:
     "border-neutral-border bg-neutral-background-muted text-neutral-text hover:bg-neutral-action-secondary-hover active:bg-neutral-action-secondary-active",
   ghost:
-    "border-transparent bg-transparent text-neutral-text hover:border-neutral-hover hover:bg-neutral-hover active:bg-neutral-action-secondary-active",
+    "border-transparent bg-transparent text-neutral-text hover:border-neutral-hover hover:bg-neutral-hover active:bg-neutral-action-secondary-active disabled:border-transparent disabled:bg-transparent",
 } as const;
 
 const sizes = {

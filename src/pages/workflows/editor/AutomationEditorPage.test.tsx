@@ -35,7 +35,7 @@ describe("AutomationEditorPage", () => {
     expect(router.state.location.search).toBe(`?view=${id}`);
     const canvas = document.querySelector<HTMLElement>(`[data-test="automation-canvas-${id}"]`)!;
     expect(canvas).not.toBeNull();
-    const steps = within(canvas).getAllByRole("button");
+    const steps = [...canvas.querySelectorAll("[data-test^=automation-step-]")];
     expect(steps.map((s) => s.textContent)).toEqual(
       stepTitles.map((title) => expect.stringContaining(title)),
     );
