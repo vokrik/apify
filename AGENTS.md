@@ -106,9 +106,18 @@ Routes that aren't built yet fall through to `PlaceholderPage`. Sidebar items ar
 - Import from `src` with the `@/` alias.
 - Use `cn(...)` from `@/lib/cn` for conditional classes. It's tailwind-merge aware, so components can take a `className` that overrides their defaults (`cn("p-4", "p-0")` → `p-0`). Add new custom theme keys to its config. oxfmt sorts Tailwind classes automatically.
 - Shared UI primitives that mirror Apify's design system live in `src/components/ui/` (`Button`, `Badge`, `CardContainer`, `Tabs`, `PageHeader`, `SearchInput`, `Checkbox`, `TablePagination`, `SegmentedControl`, `Modal`, `Select`, `TextInput`, `Radio`, `FormField`). `Modal` wraps Radix Dialog. The step editors put a `StepEditorHeader` inside it. `ActorPill` (a link) and `ActorOrTaskLabel` (its avatar, title and slug, for use inside buttons and list rows) render Actors and tasks the same way everywhere, and `RunStatusBadge` does the same for run states. Reuse them before writing new markup.
-- Full-screen editors (no sidebar) are registered at the top of `routes.tsx`, outside `AppLayout`. The automation editor (`/workflows/new`, `src/pages/workflows/editor/`) offers four variants of the Trigger → Transformation → Action chain. You pick one with the switcher in the top right, and the choice is kept in `?view=` (`react-flow`, `plain`, `steps`, `sentence`). All variants render the steps from `steps.ts` (`buildSteps(draft)`). The page owns the draft, so switching variants keeps what the user picked. Clicking a step opens its editor: a `Modal` in the canvas variants and the right-hand panel in "Steps & panel". The trigger editor is `TriggerPicker` (Actors and Tasks tabs, search, list). The transformation editor (`editor/transformations/`) works in two stages:
-  1. A categorized picker (Built-in, Marketplace and Own tabs).
-  2. A settings form for the chosen transformation, ending with an `ExamplePreview`: input table(s) joined by lines to a result table, which updates live.
+- Full-screen editors (no sidebar) are registered at the top of `routes.tsx`, outside `AppLayout`. The automation editor (`/workflows/new`, `src/pages/workflows/editor/`) offers four variants of the Trigger → Transformation → Action chain. You pick one with the switcher in the top right, and the choice is kept in `?view=` (`react-flow`, `plain`, `steps`, `sentence`). All variants render the steps from `steps.ts` (`buildSteps(draft)`). The page owns the draft, so switching variants keeps what the user picked. Steps are filled in order: `buildSteps` marks a step `locked` (disabled and dimmed, with a "… first" hint) until the previous one is configured. Clicking a step opens its editor: a `Modal` in the canvas variants and the right-hand panel in "Steps & panel". The trigger editor is `TriggerPicker` (Actors and Tasks tabs, search, list). The transformation editor (`editor/transformations/`) works in two stages:
+  1. A categorized picker (All, Built-in, Marketplace and Own tabs; All is the default).
+  2. A settings form for the chosen transformation, with a back arrow in the header that returns to the picker, ending with an `ExamplePreview`: input table(s) joined by lines to a result table, which updates live.
+
+  The action editor (`editor/actions/ActionEditor.tsx`) configures a webhook:
+  - URL
+  - authentication: none, Bearer, Basic, custom header, or an HMAC signing secret
+  - "Include data in the payload": rows in `data`, or a `dataset` link. With data, a size limit applies; when it's exceeded, a dataset link is sent or the rows are split into batches.
+  - "Skip when there are no rows" (on by default)
+  - optional failure handling: retries, timeout and an email notification
+
+  Next to the form is a live `RequestPreview` (secrets masked) and a `TestRequest` button with a simulated response. The preview is built by `buildWebhookRequest` in `src/services/actions.ts` from the saved trigger and transformation.
 
   The transformation catalog lives in `src/data/transformations.ts`, and the example Amazon dataset in `src/data/datasets.ts`. Settings types, defaults, validation, summaries and the transformation logic that computes the preview live in `src/services/transformations.ts` (unit-tested). Canvas nodes share `StepCard`, styled after `reference/console/schedules/`.
 

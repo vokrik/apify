@@ -2,6 +2,9 @@ import {
   amazonProductColumns,
   amazonProductsSample,
   datasets,
+  exampleBaselineRows,
+  exampleFilterRows,
+  exampleNewRows,
   exampleSentiments,
   sentimentModels,
 } from "@/data/datasets";
@@ -311,3 +314,14 @@ export const isComparison = (
   config.id === "get-changed-rows" ||
   config.id === "get-new-rows" ||
   config.id === "get-missing-rows";
+
+/** The transformation applied to the example rows (what the previews show). */
+export function exampleResult(config: TransformationConfig): { input: number; rows: ResultRow[] } {
+  if (isComparison(config)) {
+    return {
+      input: exampleNewRows.length,
+      rows: compareRows(config, exampleBaselineRows, exampleNewRows),
+    };
+  }
+  return { input: exampleFilterRows.length, rows: filterRows(config, exampleFilterRows) };
+}

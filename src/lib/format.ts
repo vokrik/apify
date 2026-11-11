@@ -56,3 +56,16 @@ export function truncateMiddle(value: string, keep = 7): string {
   if (value.length <= keep * 2 + 3) return value;
   return `${value.slice(0, keep)}...${value.slice(-keep)}`;
 }
+
+/** 144375 → "141 KB", 5242880 → "5 MB" (binary units, like Apify's storage pages). */
+export function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  const units = ["KB", "MB", "GB"];
+  let value = bytes / 1024;
+  let unit = 0;
+  while (value >= 1024 && unit < units.length - 1) {
+    value /= 1024;
+    unit += 1;
+  }
+  return `${value >= 10 ? Math.round(value) : Math.round(value * 10) / 10} ${units[unit]}`;
+}

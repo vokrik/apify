@@ -5,8 +5,10 @@ import { ArrowLeftIcon } from "@/components/icons";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { type Segment, SegmentedControl } from "@/components/ui/SegmentedControl";
+import type { WebhookAction } from "@/services/actions";
 import type { TransformationConfig } from "@/services/transformations";
 
+import { ActionEditor } from "./actions/ActionEditor";
 import { PlainCanvasView } from "./PlainCanvasView";
 import { ReactFlowView } from "./ReactFlowView";
 import { SentenceView } from "./SentenceView";
@@ -49,14 +51,19 @@ export function AutomationEditorPage() {
   const view: EditorView = isEditorView(requested) ? requested : "react-flow";
 
   // The draft lives here, so switching variants keeps what the user picked.
-  const [draft, setDraft] = useState<AutomationDraft>({ trigger: null, transformation: null });
+  const [draft, setDraft] = useState<AutomationDraft>({
+    trigger: null,
+    transformation: null,
+    action: null,
+  });
   // Canvas variants edit a step in a modal; "Steps & panel" edits it in the side panel.
   const [modalStep, setModalStep] = useState<StepKind | null>(null);
   // The panel starts on the trigger picker, since picking a trigger is always the first step.
   const [panelStep, setPanelStep] = useState<StepKind | null>("trigger");
 
+  const steps = buildSteps(draft);
   const openStep = (kind: StepKind) => {
-    if (kind === "action") return; // The action editor comes next.
+    if (steps.find((s) => s.kind === kind)?.locked) return; // Steps are filled in order.
     if (view === "steps") setPanelStep(panelStep === kind ? null : kind);
     else setModalStep(kind);
   };
@@ -70,6 +77,10 @@ export function AutomationEditorPage() {
   };
   const saveTransformation = (transformation: TransformationConfig) => {
     setDraft({ ...draft, transformation });
+    closeEditor();
+  };
+  const saveAction = (action: WebhookAction) => {
+    setDraft({ ...draft, action });
     closeEditor();
   };
 
@@ -93,10 +104,22 @@ export function AutomationEditorPage() {
         />
       );
     }
+    if (kind === "action") {
+      return (
+        <ActionEditor
+          value={draft.action}
+          trigger={draft.trigger}
+          transformation={draft.transformation}
+          onSave={saveAction}
+          onClose={closeEditor}
+          inDialog={inDialog}
+        />
+      );
+    }
     return null;
   };
 
-  const viewProps: EditorViewProps = { steps: buildSteps(draft), onStepClick: openStep };
+  const viewProps: EditorViewProps = { steps, onStepClick: openStep };
 
   return (
     <div className="flex h-screen min-w-[768px] flex-col bg-neutral-background">
@@ -136,7 +159,7 @@ export function AutomationEditorPage() {
       <Modal
         open={modalStep !== null}
         onOpenChange={(open) => !open && closeEditor()}
-        className={modalStep === "transformation" ? "h-[calc(100vh-8rem)] w-[100rem]" : "h-[56rem]"}
+        className={modalStep === "trigger" ? "h-[56rem]" : "h-[calc(100vh-8rem)] w-[100rem]"}
       >
         {stepEditor(modalStep, true)}
       </Modal>

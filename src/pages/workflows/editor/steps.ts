@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 
 import { CubeIcon, FilterIcon, type IconProps, TasksIcon, WebhookIcon } from "@/components/icons";
+import { summarizeAction, type WebhookAction } from "@/services/actions";
 import { getActor, getTask } from "@/services/actors";
 import {
   getTransformation,
@@ -21,6 +22,15 @@ export type AutomationStep = {
   configured: boolean;
   /** Description is a `username/name` slug (monospace, like the schedule canvas). */
   mono?: boolean;
+  /** Steps are filled in order; a step is locked until the one before it is configured. */
+  locked?: boolean;
+};
+
+/** Description of a locked step: what to do first. */
+const lockedHint: Record<StepKind, string> = {
+  trigger: "",
+  transformation: "Select a trigger first",
+  action: "Add a transformation first",
 };
 
 /** What starts the automation: a finished run of this Actor or task. */
@@ -30,6 +40,7 @@ export type TriggerSelection = { type: "actor"; id: string } | { type: "task"; i
 export type AutomationDraft = {
   trigger: TriggerSelection | null;
   transformation: TransformationConfig | null;
+  action: WebhookAction | null;
 };
 
 /** The three empty steps every new automation starts with, in execution order. */
@@ -97,12 +108,25 @@ function transformationStep(config: TransformationConfig): AutomationStep {
 
 /** Steps as they should be displayed for the current draft. */
 export function buildSteps(draft: AutomationDraft): AutomationStep[] {
-  return placeholderSteps.map((step) => {
+  const steps = placeholderSteps.map((step) => {
     if (step.kind === "trigger" && draft.trigger) return triggerStep(draft.trigger) ?? step;
     if (step.kind === "transformation" && draft.transformation) {
       return transformationStep(draft.transformation);
     }
+    if (step.kind === "action" && draft.action) {
+      return {
+        ...step,
+        title: "Send webhook",
+        description: summarizeAction(draft.action),
+        configured: true,
+      };
+    }
     return step;
+  });
+  return steps.map((step, i) => {
+    const previous = steps[i - 1];
+    if (!previous || previous.configured) return step;
+    return { ...step, locked: true, description: lockedHint[step.kind] };
   });
 }
 

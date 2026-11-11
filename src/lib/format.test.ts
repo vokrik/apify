@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { durationParts, formatDateTime, formatNumber, formatUsd, truncateMiddle } from "./format";
+import {
+  durationParts,
+  formatDateTime,
+  formatNumber,
+  formatUsd,
+  truncateMiddle,
+  formatBytes,
+} from "./format";
 
 describe("format", () => {
   it("formats date time like the Console", () => {
@@ -24,5 +31,14 @@ describe("format", () => {
   it("truncates long names in the middle", () => {
     expect(truncateMiddle("understandable_hummock/amazon-scraper")).toBe("underst...scraper");
     expect(truncateMiddle("apify/web")).toBe("apify/web");
+  });
+});
+
+describe("formatBytes", () => {
+  it("uses binary units", () => {
+    expect(formatBytes(512)).toBe("512 B");
+    expect(formatBytes(144375)).toBe("141 KB");
+    expect(formatBytes(5 * 1024 * 1024)).toBe("5 MB");
+    expect(formatBytes(1536)).toBe("1.5 KB");
   });
 });

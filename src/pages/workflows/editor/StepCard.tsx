@@ -5,7 +5,7 @@ import type { AutomationStep } from "./steps";
 // Node styling follows the schedule canvas in reference/console/schedules/: transparent card with a
 // 1px separator border and 12px radius, a 32px icon tile, semibold title and subtle subtitle
 // (monospace for `username/name`, like the schedule's Actor nodes). Unconfigured steps use a
-// dashed border.
+// dashed border; locked ones (waiting for the previous step) are dimmed and disabled.
 
 export type StepCardProps = {
   step: AutomationStep;
@@ -22,8 +22,9 @@ export function StepCard({ step, onClick, active = false, className }: StepCardP
       type="button"
       data-test={`automation-step-${step.kind}`}
       onClick={onClick}
+      disabled={step.locked}
       className={cn(
-        "flex w-max max-w-[44rem] min-w-[26rem] cursor-pointer items-center gap-2 rounded-lg border bg-neutral-background p-[1rem] text-left transition-colors duration-[120ms] hover:border-primary-action",
+        "flex w-max max-w-[44rem] min-w-[26rem] cursor-pointer items-center gap-2 rounded-lg border bg-neutral-background p-[1rem] text-left transition-colors duration-[120ms] hover:border-primary-action disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-neutral-border",
         step.configured
           ? "border-solid border-neutral-separator-subtle"
           : "border-dashed border-neutral-border",

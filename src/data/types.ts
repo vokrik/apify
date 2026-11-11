@@ -5,6 +5,8 @@ export type User = {
   /** Label shown under the name in the sidebar ("Personal" or an organization name). */
   accountLabel: string;
   avatarUrl?: string;
+  /** Account email (notifications go here). */
+  email: string;
   plan: "FREE" | "STARTER" | "SCALE" | "BUSINESS";
 };
 

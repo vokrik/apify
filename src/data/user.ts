@@ -6,6 +6,7 @@ export const currentUser: User = {
   displayName: "Martin",
   accountLabel: "Personal",
   avatarUrl: "/images/users/current-user.png",
+  email: "martin@hummock.example",
   plan: "FREE",
 };
 
