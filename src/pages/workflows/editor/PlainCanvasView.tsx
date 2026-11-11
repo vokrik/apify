@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 
 import { StepCard } from "./StepCard";
-import { placeholderSteps } from "./steps";
+import type { EditorViewProps } from "./steps";
 
 // Variant 2: the same nodes in plain React on a plain background. Boxes stacked top to bottom, joined by
 // connectors drawn with divs. No canvas library, so no panning or zooming.
@@ -15,14 +15,14 @@ function Connector() {
   );
 }
 
-export function PlainCanvasView() {
+export function PlainCanvasView({ steps, onStepClick }: EditorViewProps) {
   return (
     <div className="flex h-full overflow-auto bg-neutral-background">
       <div data-test="automation-canvas-plain" className="m-auto flex flex-col items-center py-10">
-        {placeholderSteps.map((step, i) => (
+        {steps.map((step, i) => (
           <Fragment key={step.kind}>
             {i > 0 && <Connector />}
-            <StepCard step={step} />
+            <StepCard step={step} onClick={() => onStepClick(step.kind)} />
           </Fragment>
         ))}
       </div>
