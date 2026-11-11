@@ -13,8 +13,10 @@ function Blank({ step, onClick }: { step: AutomationStep; onClick: () => void })
       type="button"
       data-test={`automation-step-${step.kind}`}
       onClick={onClick}
+      disabled={step.locked}
+      title={step.locked ? step.description : undefined}
       className={cn(
-        "mx-[0.2rem] inline-flex h-[3.6rem] cursor-pointer items-center gap-2 rounded-md border px-2 align-middle text-xl font-medium transition-colors duration-[120ms] hover:border-primary-action",
+        "mx-[0.2rem] inline-flex h-[3.6rem] cursor-pointer items-center gap-2 rounded-md border px-2 align-middle text-xl font-medium transition-colors duration-[120ms] hover:border-primary-action disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-primary-border-subtle disabled:hover:bg-primary-background-subtle",
         step.configured
           ? "border-solid border-neutral-border bg-neutral-background-muted text-neutral-text hover:bg-neutral-background-subtle"
           : "border-dashed border-primary-border-subtle bg-primary-background-subtle text-primary-text hover:bg-primary-background",

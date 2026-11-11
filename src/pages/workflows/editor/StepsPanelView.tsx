@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { SettingsIcon } from "@/components/icons";
+import { cn } from "@/lib/cn";
 
 import { StepCard } from "./StepCard";
 import type { EditorViewProps, StepKind } from "./steps";
@@ -44,7 +45,12 @@ export function StepsPanelView({ steps, onStepClick, activeStep, panel }: StepsP
           {steps.map((step, i) => (
             <li key={step.kind} className="flex gap-3">
               <div className="flex flex-col items-center">
-                <span className="flex size-[2.4rem] shrink-0 items-center justify-center rounded-full border border-neutral-border bg-neutral-background-muted text-xs font-medium text-neutral-text-muted">
+                <span
+                  className={cn(
+                    "flex size-[2.4rem] shrink-0 items-center justify-center rounded-full border border-neutral-border bg-neutral-background-muted text-xs font-medium text-neutral-text-muted",
+                    step.locked && "opacity-50",
+                  )}
+                >
                   {i + 1}
                 </span>
                 {i < steps.length - 1 && (

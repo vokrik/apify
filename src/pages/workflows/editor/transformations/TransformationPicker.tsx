@@ -9,7 +9,10 @@ import { getTransformations } from "@/services/transformations";
 
 import { transformationIcons } from "./transformationIcons";
 
-const categories: { id: TransformationCategory; label: string }[] = [
+type Filter = TransformationCategory | "all";
+
+const categories: { id: Filter; label: string }[] = [
+  { id: "all", label: "All" },
   { id: "builtin", label: "Built-in" },
   { id: "marketplace", label: "Marketplace" },
   { id: "own", label: "Own" },
@@ -20,13 +23,12 @@ export type TransformationPickerProps = {
   onSelect: (id: TransformationId) => void;
 };
 
-/** First stage of the transformation editor: pick one, by category, with search. */
+/** First stage of the transformation editor: pick one (all, or by category), with search. */
 export function TransformationPicker({ value, onSelect }: TransformationPickerProps) {
-  const initial = value ? getTransformations().find((t) => t.id === value)!.category : "builtin";
-  const [category, setCategory] = useState<TransformationCategory>(initial);
+  const [category, setCategory] = useState<Filter>("all");
   const [query, setQuery] = useState("");
   const q = query.trim().toLowerCase();
-  const items = getTransformations(category).filter(
+  const items = getTransformations(category === "all" ? undefined : category).filter(
     (t) => t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q),
   );
   const label = categories.find((c) => c.id === category)!.label;
@@ -69,9 +71,15 @@ export function TransformationPicker({ value, onSelect }: TransformationPickerPr
                   </span>
                   <span className="block text-xs text-neutral-text-subtle">{t.description}</span>
                 </span>
-                {t.author && (
-                  <span className="shrink-0 text-xs text-neutral-text-subtle">by {t.author}</span>
-                )}
+                <span className="shrink-0 text-xs text-neutral-text-subtle">
+                  {[
+                    // Under "All", say which category each transformation comes from.
+                    category === "all" && categories.find((c) => c.id === t.category)!.label,
+                    t.author && `by ${t.author}`,
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
                 {selected && <CheckIcon className="size-4 shrink-0 text-primary-text" />}
               </button>
             </li>

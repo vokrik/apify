@@ -6,14 +6,54 @@ import { renderApp } from "@/test/render";
 const step = (kind: string) =>
   document.querySelector<HTMLElement>(`[data-test="automation-step-${kind}"]`)!;
 
+/** Steps unlock in order, so pick a trigger before opening the transformation. */
+async function selectTrigger(user: ReturnType<typeof renderApp>["user"], view: string) {
+  if (view !== "steps") {
+    await user.click(await screen.findByRole("button", { name: /Select Trigger/ }));
+  }
+  const picker = view === "steps" ? document.body : await screen.findByRole("dialog");
+  await user.click(await within(picker).findByRole("button", { name: /Amazon Scraper/ }));
+}
+
 async function openTransformation(view = "plain") {
   const result = renderApp(`/workflows/new?view=${view}`);
+  await selectTrigger(result.user, view);
   await result.user.click(await screen.findByRole("button", { name: /Add Transformation/ }));
   return result;
 }
 
 describe("Add transformation", () => {
-  it("lists transformations by category", async () => {
+  it("is locked until a trigger is selected, and the action until it's saved", async () => {
+    const { user } = renderApp("/workflows/new?view=plain");
+    expect(await screen.findByRole("button", { name: /Add Transformation/ })).toBeDisabled();
+    expect(step("transformation")).toHaveTextContent("Select a trigger first");
+    expect(step("action")).toBeDisabled();
+
+    await selectTrigger(user, "plain");
+    expect(step("transformation")).toBeEnabled();
+    expect(step("transformation")).toHaveTextContent("Filter or reshape the dataset");
+    expect(step("action")).toBeDisabled();
+    expect(step("action")).toHaveTextContent("Add a transformation first");
+
+    await user.click(step("transformation"));
+    await user.click(await screen.findByRole("button", { name: /Get new rows/ }));
+    await user.click(screen.getByRole("button", { name: "Save transformation" }));
+    expect(step("action")).toBeEnabled();
+  });
+
+  it("goes back from the settings to the list with the arrow in the header", async () => {
+    const { user } = await openTransformation();
+    await user.click(await screen.findByRole("button", { name: /Get new rows/ }));
+    await screen.findByRole("dialog", { name: "Get new rows" });
+    await user.click(screen.getByRole("button", { name: "Back to transformations" }));
+    const dialog = await screen.findByRole("dialog", { name: "Add transformation" });
+    expect(within(dialog).getByRole("button", { name: /Get new rows/ })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  });
+
+  it("lists all transformations, and each category on its own tab", async () => {
     const { user } = await openTransformation();
     const dialog = await screen.findByRole("dialog", { name: "Add transformation" });
     const names = (list: string) =>
@@ -21,6 +61,15 @@ describe("Add transformation", () => {
         .getAllByRole("button")
         .map((b) => b.querySelector(".font-semibold")?.textContent);
 
+    expect(names("All transformations")).toEqual([
+      "Get changed rows",
+      "Get new rows",
+      "Get missing rows",
+      "Filter incomplete data",
+      "Filter by sentiment",
+      "Products below threshold",
+    ]);
+    await user.click(within(dialog).getByRole("tab", { name: "Built-in" }));
     expect(names("Built-in transformations")).toEqual([
       "Get changed rows",
       "Get new rows",
@@ -92,15 +141,14 @@ describe("Add transformation", () => {
     await user.click(step("transformation"));
     dialog = await screen.findByRole("dialog", { name: "Products below threshold" });
     expect(within(dialog).getAllByRole("listitem", { name: /^Rule/ })).toHaveLength(1);
-    await user.click(within(dialog).getByRole("button", { name: "Back" }));
+    await user.click(within(dialog).getByRole("button", { name: "Back to transformations" }));
     expect(
       within(dialog).getByRole("button", { name: /Products below threshold/ }),
     ).toHaveAttribute("aria-pressed", "true");
   });
 
   it("opens in the side panel in the Steps & panel variant", async () => {
-    const { user } = renderApp("/workflows/new?view=steps");
-    await user.click(await screen.findByRole("button", { name: /Add Transformation/ }));
+    const { user } = await openTransformation("steps");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     await user.click(screen.getByRole("tab", { name: "Marketplace" }));
     await user.click(screen.getByRole("button", { name: /Filter by sentiment/ }));

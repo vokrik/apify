@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import { ChevronLeftIcon } from "@/components/icons";
 import { Button } from "@/components/ui/Button";
 import type { TransformationId } from "@/data/types";
 import {
@@ -82,25 +81,17 @@ export function TransformationEditor({
         description={transformation.description}
         onClose={onClose}
         inDialog={inDialog}
+        onBack={() => setStage("pick")}
+        backLabel="Back to transformations"
       />
       <div className="min-h-0 flex-1 overflow-y-auto border-t border-neutral-separator-subtle px-4 py-4">
         <SettingsForm config={config} onChange={setConfig} />
       </div>
-      <footer className="flex shrink-0 items-center justify-between gap-2 border-t border-neutral-separator-subtle px-4 py-3">
-        <Button onClick={() => setStage("pick")}>
-          <ChevronLeftIcon />
-          Back
+      <footer className="flex shrink-0 items-center justify-end gap-2 border-t border-neutral-separator-subtle px-4 py-3">
+        <Button onClick={onClose}>Cancel</Button>
+        <Button variant="primary" disabled={!isConfigValid(config)} onClick={() => onSave(config)}>
+          Save transformation
         </Button>
-        <div className="flex gap-2">
-          <Button onClick={onClose}>Cancel</Button>
-          <Button
-            variant="primary"
-            disabled={!isConfigValid(config)}
-            onClick={() => onSave(config)}
-          >
-            Save transformation
-          </Button>
-        </div>
       </footer>
     </>
   );
